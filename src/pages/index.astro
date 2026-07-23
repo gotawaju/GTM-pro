@@ -1,0 +1,181 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const articles = [
+  {
+    grade: "A-2",
+    category: "market",
+    categoryLabel: "市場を知る",
+    source: "The Signal",
+    published: "2026-07-17",
+    titleJa: "GTMエンジニアという役割が、なぜ急速に広がっているのか",
+    titleOrig: "The Rise of the GTM Engineer",
+    summary:
+      "営業・マーケティング・データ基盤を横断して設計できる人材が、従来の分業の隙間を埋め始めている。単なるツール運用ではなく、収益プロセス全体を実装対象として扱う職能への移行が重要だ。",
+    note:
+      "役割の輪郭をつかむための基礎資料。組織設計の前提を揃えたい人は本文を読む価値がある。",
+    verdict: "read",
+    verdictLabel: "読む",
+    minutes: 9,
+    fulltext: true,
+    url: "https://www.thesignal.club/"
+  },
+  {
+    grade: "B-2",
+    category: "build",
+    categoryLabel: "作り方を知る",
+    source: "Clay",
+    published: "2026-07-15",
+    titleJa: "GTMエンジニアを採用するとき、先に定義すべき仕事",
+    titleOrig: "GTM Engineering: What It Is and How to Hire",
+    summary:
+      "採用要件は特定ツールの経験より、曖昧な商流を分解して再構築できる力で決まる。最初の一人には、運用担当ではなく課題発見から検証までを閉じられる権限が必要になる。",
+    note:
+      "実務の論点は具体的だがベンダー視点も含む。採用要件の章を中心に流し読みでよい。",
+    verdict: "skim",
+    verdictLabel: "流し読み",
+    minutes: 7,
+    fulltext: true,
+    url: "https://www.clay.com/blog"
+  },
+  {
+    grade: "C-4",
+    category: "demand",
+    categoryLabel: "需要を知る",
+    source: "Product Studio",
+    published: "2026-07-12",
+    titleJa: "「10人を1人に置き換える」という主張は、需要の証拠になるか",
+    titleOrig: "The $127K Role That's Replacing Entire Sales Ops Teams",
+    summary:
+      "GTMエンジニアへの期待が高まっていることは示すが、人員代替の規模を裏づける材料は不足している。市場需要の方向感と、誇張された効率化の数字は分けて扱うべきだ。",
+    note:
+      "看板の「10人→1人」は記事自身がX投稿1件を出典としており、中核主張の裏付けが弱い。",
+    verdict: "skip",
+    verdictLabel: "見送り",
+    minutes: 5,
+    fulltext: false,
+    url: "https://productstudio.com/"
+  }
+];
+
+const counts = {
+  candidates: 24,
+  read: articles.filter((item) => item.verdict === "read").length,
+  skim: articles.filter((item) => item.verdict === "skim").length,
+  skip: articles.filter((item) => item.verdict === "skip").length
+};
+---
+
+<BaseLayout>
+  <main id="main">
+    <section class="hero">
+      <div>
+        <p class="eyebrow">WEEK 30 · 2026</p>
+        <h1>今週、<em>読む価値</em>が<br />あるものだけ。</h1>
+      </div>
+      <div class="update">
+        <span>最終更新</span>
+        <strong>2026.07.20</strong>
+        <p>毎週月曜 6:00 JST</p>
+      </div>
+    </section>
+
+    <section class="funnel" aria-label="今週の選定結果">
+      <div><strong>{counts.candidates}</strong><span>候補</span></div>
+      <span class="funnel-arrow" aria-hidden="true">→</span>
+      <div><strong>{counts.read}</strong><span>読む</span></div>
+      <div><strong>{counts.skim}</strong><span>流し読み</span></div>
+      <div><strong>{counts.skip}</strong><span>見送り</span></div>
+      <p><strong>{counts.candidates - articles.length}</strong>件を破棄</p>
+    </section>
+
+    <details class="legend">
+      <summary>信頼度コードの読み方</summary>
+      <div>
+        <p><strong>A / B / C</strong> は発信者の性質（一次データ / 第三者分析 / ベンダー発信）</p>
+        <p><strong>1〜4</strong> は裏付けの強さ。数字が小さいほど強い裏付けがあります。</p>
+      </div>
+    </details>
+
+    <nav class="filters" aria-label="記事の絞り込み">
+      <button class="is-active" type="button" data-filter="all" aria-pressed="true">すべて</button>
+      <button type="button" data-filter="market" aria-pressed="false">市場を知る</button>
+      <button type="button" data-filter="build" aria-pressed="false">作り方を知る</button>
+      <button type="button" data-filter="demand" aria-pressed="false">需要を知る</button>
+      <span aria-hidden="true"></span>
+      <button type="button" data-filter="read" aria-pressed="false">読む</button>
+      <button type="button" data-filter="skim" aria-pressed="false">流し読み</button>
+      <button type="button" data-filter="skip" aria-pressed="false">見送り</button>
+    </nav>
+
+    <section class="articles" aria-live="polite">
+      <div class="section-heading">
+        <h2>選定記事</h2>
+        <p><span id="visible-count">{articles.length}</span> ARTICLES</p>
+      </div>
+
+      {articles.map((article) => (
+        <article
+          class={`article-card grade-${article.grade.charAt(0).toLowerCase()}`}
+          data-category={article.category}
+          data-verdict={article.verdict}
+        >
+          <div class="card-meta">
+            <span class="grade">{article.grade}</span>
+            <span>{article.categoryLabel}</span>
+            <span>{article.source}</span>
+            <time datetime={article.published}>{article.published.replaceAll("-", ".")}</time>
+          </div>
+          <div class="card-body">
+            <div class="card-main">
+              <h3>{article.titleJa}</h3>
+              <p class="original-title">{article.titleOrig}</p>
+              <p class="summary">{article.summary}</p>
+              <div class="note">
+                <strong>{article.verdictLabel}</strong>
+                <p>{article.note}</p>
+              </div>
+            </div>
+            <aside class="card-side">
+              <p>{article.fulltext ? "本文取得済み" : "本文未取得"}</p>
+              <p>推定 {article.minutes} 分</p>
+              <a href={article.url} target="_blank" rel="noopener noreferrer">
+                原文を読む <span aria-hidden="true">↗</span>
+              </a>
+            </aside>
+          </div>
+        </article>
+      ))}
+      <p class="empty-state" hidden>条件に一致する記事はありません。</p>
+    </section>
+  </main>
+
+  <script>
+    const buttons = Array.from(document.querySelectorAll<HTMLButtonElement>("[data-filter]"));
+    const cards = Array.from(document.querySelectorAll<HTMLElement>(".article-card"));
+    const count = document.querySelector<HTMLElement>("#visible-count");
+    const empty = document.querySelector<HTMLElement>(".empty-state");
+
+    buttons.forEach((button) => {
+      button.addEventListener("click", () => {
+        const filter = button.dataset.filter;
+        buttons.forEach((item) => {
+          const active = item === button;
+          item.classList.toggle("is-active", active);
+          item.setAttribute("aria-pressed", String(active));
+        });
+        let visible = 0;
+        cards.forEach((card) => {
+          const matches =
+            filter === "all" ||
+            card.dataset.category === filter ||
+            card.dataset.verdict === filter;
+          card.hidden = !matches;
+          if (matches) visible += 1;
+        });
+        if (count) count.textContent = String(visible);
+        if (empty) empty.hidden = visible !== 0;
+      });
+    });
+  </script>
+</BaseLayout>
