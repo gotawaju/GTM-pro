@@ -1,158 +1,176 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-
-const articles = [
-  {
-    grade: "A-2",
-    category: "market",
-    categoryLabel: "市場を知る",
-    source: "The Signal",
-    published: "2026-07-17",
-    titleJa: "GTMエンジニアという役割が、なぜ急速に広がっているのか",
-    titleOrig: "The Rise of the GTM Engineer",
-    summary:
-      "営業・マーケティング・データ基盤を横断して設計できる人材が、従来の分業の隙間を埋め始めている。単なるツール運用ではなく、収益プロセス全体を実装対象として扱う職能への移行が重要だ。",
-    note:
-      "役割の輪郭をつかむための基礎資料。組織設計の前提を揃えたい人は本文を読む価値がある。",
-    verdict: "read",
-    verdictLabel: "読む",
-    minutes: 9,
-    fulltext: true,
-    url: "https://www.thesignal.club/"
-  },
-  {
-    grade: "B-2",
-    category: "build",
-    categoryLabel: "作り方を知る",
-    source: "Clay",
-    published: "2026-07-15",
-    titleJa: "GTMエンジニアを採用するとき、先に定義すべき仕事",
-    titleOrig: "GTM Engineering: What It Is and How to Hire",
-    summary:
-      "採用要件は特定ツールの経験より、曖昧な商流を分解して再構築できる力で決まる。最初の一人には、運用担当ではなく課題発見から検証までを閉じられる権限が必要になる。",
-    note:
-      "実務の論点は具体的だがベンダー視点も含む。採用要件の章を中心に流し読みでよい。",
-    verdict: "skim",
-    verdictLabel: "流し読み",
-    minutes: 7,
-    fulltext: true,
-    url: "https://www.clay.com/blog"
-  },
-  {
-    grade: "C-4",
-    category: "demand",
-    categoryLabel: "需要を知る",
-    source: "Product Studio",
-    published: "2026-07-12",
-    titleJa: "「10人を1人に置き換える」という主張は、需要の証拠になるか",
-    titleOrig: "The $127K Role That's Replacing Entire Sales Ops Teams",
-    summary:
-      "GTMエンジニアへの期待が高まっていることは示すが、人員代替の規模を裏づける材料は不足している。市場需要の方向感と、誇張された効率化の数字は分けて扱うべきだ。",
-    note:
-      "看板の「10人→1人」は記事自身がX投稿1件を出典としており、中核主張の裏付けが弱い。",
-    verdict: "skip",
-    verdictLabel: "見送り",
-    minutes: 5,
-    fulltext: false,
-    url: "https://productstudio.com/"
-  }
-];
-
-const counts = {
-  candidates: 24,
-  read: articles.filter((item) => item.verdict === "read").length,
-  skim: articles.filter((item) => item.verdict === "skim").length,
-  skip: articles.filter((item) => item.verdict === "skip").length
-};
+import { additionalSources, sources } from "../data/sources";
 ---
 
-<BaseLayout>
+<BaseLayout
+  title="GTM Digest — GTM Engineerの現在地"
+  description="GTM Engineerを市場、需要、ワークフロー、技術スタックから読み解く日本語リサーチダイジェスト"
+>
   <main id="main">
     <section class="hero">
       <div>
-        <p class="eyebrow">WEEK 30 · 2026</p>
-        <h1>今週、<em>読む価値</em>が<br />あるものだけ。</h1>
+        <p class="eyebrow">ISSUE 01 · JULY 2026</p>
+        <h1>GTM Engineerを、<br /><em>構造から理解する。</em></h1>
+        <p class="hero-lead">
+          流行の職種名としてではなく、市場・需要・仕事・技術の4方向から現在地を読む。
+          10本の論点を、GTM-OSを設計するためのひとつの地図にまとめました。
+        </p>
       </div>
       <div class="update">
         <span>最終更新</span>
-        <strong>2026.07.20</strong>
-        <p>毎週月曜 6:00 JST</p>
+        <strong>2026.07.24</strong>
+        <p>随時検証・毎週更新</p>
       </div>
     </section>
 
-    <section class="funnel" aria-label="今週の選定結果">
-      <div><strong>{counts.candidates}</strong><span>候補</span></div>
-      <span class="funnel-arrow" aria-hidden="true">→</span>
-      <div><strong>{counts.read}</strong><span>読む</span></div>
-      <div><strong>{counts.skim}</strong><span>流し読み</span></div>
-      <div><strong>{counts.skip}</strong><span>見送り</span></div>
-      <p><strong>{counts.candidates - articles.length}</strong>件を破棄</p>
+    <section class="signal-strip" aria-label="今回のリサーチ範囲">
+      <div><strong>10</strong><span>CORE SOURCES</span></div>
+      <div><strong>4</strong><span>VIEWPOINTS</span></div>
+      <div><strong>5</strong><span>RESEARCH TRACKS</span></div>
+      <p>原典・調査・求人・ベンダー発信を分離して読む</p>
     </section>
 
-    <details class="legend">
-      <summary>信頼度コードの読み方</summary>
-      <div>
-        <p><strong>A / B / C</strong> は発信者の性質（一次データ / 第三者分析 / ベンダー発信）</p>
-        <p><strong>1〜4</strong> は裏付けの強さ。数字が小さいほど強い裏付けがあります。</p>
+    <section class="thesis">
+      <div class="section-kicker">EDITOR'S NOTE</div>
+      <div class="thesis-grid">
+        <h2>今週の仮説</h2>
+        <div>
+          <p class="thesis-lead">
+            GTM Engineerは「新しいツール担当」ではない。分断された営業・マーケティング・データの間に、
+            実験可能な収益システムをつくる役割である。
+          </p>
+          <p>
+            ただし、役職名の普及と市場の成熟は同じではありません。ベンダーが語る効率化、
+            求人市場が求める能力、実務者が担う仕事を分けて確認する必要があります。
+            今回は結論を急がず、どの主張をどの原典で確かめるべきかを整理しました。
+          </p>
+        </div>
       </div>
-    </details>
+    </section>
 
-    <nav class="filters" aria-label="記事の絞り込み">
-      <button class="is-active" type="button" data-filter="all" aria-pressed="true">すべて</button>
-      <button type="button" data-filter="market" aria-pressed="false">市場を知る</button>
-      <button type="button" data-filter="build" aria-pressed="false">作り方を知る</button>
-      <button type="button" data-filter="demand" aria-pressed="false">需要を知る</button>
-      <span aria-hidden="true"></span>
-      <button type="button" data-filter="read" aria-pressed="false">読む</button>
-      <button type="button" data-filter="skim" aria-pressed="false">流し読み</button>
-      <button type="button" data-filter="skip" aria-pressed="false">見送り</button>
-    </nav>
-
-    <section class="articles" aria-live="polite">
+    <section class="lens-section">
       <div class="section-heading">
-        <h2>選定記事</h2>
-        <p><span id="visible-count">{articles.length}</span> ARTICLES</p>
+        <div>
+          <p class="section-kicker">READING MAP</p>
+          <h2>4つの角度で現在地を読む</h2>
+        </div>
+        <p>MACRO ↔ MICRO</p>
+      </div>
+      <div class="lens-grid">
+        <article>
+          <span>01</span>
+          <h3>なぜ生まれたか</h3>
+          <p>AI、自動化、GTMツールの断片化という市場構造から、役割の必然性を見る。</p>
+        </article>
+        <article>
+          <span>02</span>
+          <h3>何をつくるか</h3>
+          <p>シグナル収集、データ補完、アウトバウンド、CRM同期をワークフロー単位で見る。</p>
+        </article>
+        <article>
+          <span>03</span>
+          <h3>誰が求めるか</h3>
+          <p>求人、採用企業、VC、エージェンシーから需要の実在性と調達方法を見る。</p>
+        </article>
+        <article>
+          <span>04</span>
+          <h3>何を基盤化するか</h3>
+          <p>人に残す判断と、GTM-OSで標準化できるデータ・実行・評価の境界を見る。</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="source-library" aria-live="polite">
+      <div class="section-heading">
+        <div>
+          <p class="section-kicker">SOURCE LIBRARY</p>
+          <h2>10本の選定論点</h2>
+        </div>
+        <p><span id="visible-count">{sources.length}</span> SOURCES</p>
       </div>
 
-      {articles.map((article) => (
-        <article
-          class={`article-card grade-${article.grade.charAt(0).toLowerCase()}`}
-          data-category={article.category}
-          data-verdict={article.verdict}
-        >
-          <div class="card-meta">
-            <span class="grade">{article.grade}</span>
-            <span>{article.categoryLabel}</span>
-            <span>{article.source}</span>
-            <time datetime={article.published}>{article.published.replaceAll("-", ".")}</time>
-          </div>
-          <div class="card-body">
-            <div class="card-main">
-              <h3>{article.titleJa}</h3>
-              <p class="original-title">{article.titleOrig}</p>
-              <p class="summary">{article.summary}</p>
-              <div class="note">
-                <strong>{article.verdictLabel}</strong>
-                <p>{article.note}</p>
+      <nav class="filters" aria-label="情報源の絞り込み">
+        <button class="is-active" type="button" data-filter="all" aria-pressed="true">すべて</button>
+        <button type="button" data-filter="macro" aria-pressed="false">マクロ</button>
+        <button type="button" data-filter="micro" aria-pressed="false">ミクロ</button>
+        <button type="button" data-filter="必読" aria-pressed="false">必読</button>
+        <button type="button" data-filter="深掘り" aria-pressed="false">深掘り</button>
+        <button type="button" data-filter="検証" aria-pressed="false">要検証</button>
+      </nav>
+
+      <div class="source-list">
+        {sources.map((source) => (
+          <article
+            class="source-card"
+            data-lens={source.lens}
+            data-priority={source.priority}
+          >
+            <div class="source-number">{String(source.id).padStart(2, "0")}</div>
+            <div class="source-content">
+              <div class="source-meta">
+                <span>{source.categoryLabel}</span>
+                <span>{source.lens === "macro" ? "マクロ" : "ミクロ"}</span>
+                <span>{source.kindLabel}</span>
               </div>
+              <h3>{source.title}</h3>
+              <p class="publisher">{source.publisher}</p>
+              <p class="source-question">{source.question}</p>
+              <p class="source-takeaway">{source.takeaway}</p>
             </div>
-            <aside class="card-side">
-              <p>{article.fulltext ? "本文取得済み" : "本文未取得"}</p>
-              <p>推定 {article.minutes} 分</p>
-              <a href={article.url} target="_blank" rel="noopener noreferrer">
-                原文を読む <span aria-hidden="true">↗</span>
-              </a>
-            </aside>
-          </div>
-        </article>
-      ))}
-      <p class="empty-state" hidden>条件に一致する記事はありません。</p>
+            <div class="source-action">
+              <strong>{source.priority}</strong>
+              <a href={source.url} target="_blank" rel="noopener noreferrer">原典を確認 ↗</a>
+            </div>
+          </article>
+        ))}
+      </div>
+      <p class="empty-state" hidden>条件に一致する情報源はありません。</p>
+    </section>
+
+    <section class="claygency">
+      <div>
+        <p class="section-kicker">OPEN QUESTION</p>
+        <h2>次に解くべきは、<br />Claygency市場の構造。</h2>
+      </div>
+      <div>
+        <p>
+          GTM-OSを事業として設計するなら、企業がなぜ採用ではなく外注を選び、
+          エージェンシーがどこで利益を生み、どこで運用負荷を抱えるかを理解する必要があります。
+        </p>
+        <ul>
+          <li>案件単価・契約期間・継続率</li>
+          <li>初期構築と保守運用の工数配分</li>
+          <li>再利用できるワークフローと個社対応</li>
+          <li>特定ツールへの依存と乗り換えコスト</li>
+          <li>内製・採用・外注を分ける条件</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="additional">
+      <div class="section-heading">
+        <div>
+          <p class="section-kicker">NEXT INPUTS</p>
+          <h2>目的別の追加インプット</h2>
+        </div>
+      </div>
+      <div class="additional-grid">
+        {additionalSources.map((source) => (
+          <a href={source.url} target="_blank" rel="noopener noreferrer">
+            <span>{source.purpose}</span>
+            <strong>{source.publisher}</strong>
+            <p>{source.note}</p>
+            <b aria-hidden="true">↗</b>
+          </a>
+        ))}
+      </div>
     </section>
   </main>
 
   <script>
     const buttons = Array.from(document.querySelectorAll<HTMLButtonElement>("[data-filter]"));
-    const cards = Array.from(document.querySelectorAll<HTMLElement>(".article-card"));
+    const cards = Array.from(document.querySelectorAll<HTMLElement>(".source-card"));
     const count = document.querySelector<HTMLElement>("#visible-count");
     const empty = document.querySelector<HTMLElement>(".empty-state");
 
@@ -168,8 +186,8 @@ const counts = {
         cards.forEach((card) => {
           const matches =
             filter === "all" ||
-            card.dataset.category === filter ||
-            card.dataset.verdict === filter;
+            card.dataset.lens === filter ||
+            card.dataset.priority === filter;
           card.hidden = !matches;
           if (matches) visible += 1;
         });
